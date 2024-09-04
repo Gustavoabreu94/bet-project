@@ -1,0 +1,42 @@
+services:
+  bet-db:
+    container_name: bet-db
+    image: postgres:12.9
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: betdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+    networks:
+      - base_network
+  bet-api:
+    container_name: bet-api
+    build:
+      context: ./bff-project
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./bff-project:/app # Mapeia o diretório atual para o diretório de trabalho do container
+      - /app/node_modules # Evita conflitos entre node_modules no host e no container
+    command: npm run start:dev
+    working_dir: /app
+  bet-web:
+    container_name: bet-web
+    build: ./site-project
+    command: npm run dev
+    working_dir: /app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./site-project:/app
+      - /app/node_modules
+
+networks:
+  base_network:
+
+volumes:
+  db-data:
