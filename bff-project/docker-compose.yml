@@ -1,25 +1,11 @@
-services:
-  # api: 
-  #   build: .
-  #   command: npm run start:dev
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./:/app
-  #     - /app/node_modules
+version: '3'
 
-  bet-api:
-    container_name: bet-api
-    image: 'node:18'
-    networks:
-      - base_network
+services:
+  nest-app:
+    build: .
     ports:
       - '3000:3000'
-    command: sh -c "npm run start:dev"
-    working_dir: /app
-    env_file: .env
     volumes:
-      - ./:/app
-
-networks:
-  base_network:
+      - .:/app  # Mapeia o diretório atual para o diretório de trabalho do container
+      - /app/node_modules  # Evita conflitos entre node_modules no host e no container
+    command: npm run start:dev
