@@ -1,0 +1,25 @@
+services:
+  # api: 
+  #   build: .
+  #   command: npm run start:dev
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./:/app
+  #     - /app/node_modules
+
+  bet-api:
+    container_name: bet-api
+    image: 'node:18'
+    networks:
+      - base_network
+    ports:
+      - '3000:3000'
+    command: sh -c "npm run start:dev"
+    working_dir: /app
+    env_file: .env
+    volumes:
+      - ./:/app
+
+networks:
+  base_network:
